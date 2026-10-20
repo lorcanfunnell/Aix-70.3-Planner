@@ -1,0 +1,28 @@
+{
+ "name": "Aix 70.3 Planner",
+ "short_name": "Aix 70.3",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#E7EAE4",
+ "theme_color": "#E7EAE4",
+ "description": "Adaptive training plan for IRONMAN 70.3 Pays d'Aix",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

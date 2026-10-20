@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aix 70.3</title>
+<meta name="theme-color" content="#E7EAE4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#151C20" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Aix 70.3">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stone:#E7EAE4; --paper:#F6F7F3; --ink:#1E2A30; --muted:#5F6B70; --line:#CDD3CC;
+  --swim:#2B7A86; --bike:#4C6B36; --run:#B8742A; --race:#1E2A30; --warn:#A8452F;
+  --tap:rgba(30,42,48,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --stone:#151C20; --paper:#1D262B; --ink:#E6EAE5; --muted:#97A3A6; --line:#334047;
+  --swim:#5BB3BF; --bike:#8FB06F; --run:#E0A15A; --race:#E6EAE5; --warn:#E07E66;
+  --tap:rgba(230,234,229,.07); color-scheme:dark;}}
+*{box-sizing:border-box}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100%;background:var(--stone);color:var(--ink);
+  font-family:Archivo,"Helvetica Neue",Arial,system-ui,sans-serif;font-size:16px;line-height:1.45;
+  padding:env(safe-area-inset-top,0) 0 calc(72px + env(safe-area-inset-bottom,0));}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--swim);outline-offset:2px}
+main{max-width:760px;margin:0 auto;padding:0 18px}
+
+/* hero */
+.hero{padding:22px 0 8px}
+.count{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.count b{font-size:clamp(64px,19vw,120px);line-height:.85;font-weight:800;font-stretch:62%;letter-spacing:-.02em}
+.count span{font-size:18px;font-stretch:87%;color:var(--muted);max-width:14ch;line-height:1.2}
+.strip{width:100%;height:auto;display:block;margin-top:18px;touch-action:manipulation}
+.strip .bar{cursor:pointer}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:0}
+
+/* week */
+.weekhead{display:flex;align-items:center;justify-content:space-between;margin:26px 0 4px;gap:8px}
+.weekhead h2{margin:0;font-size:28px;font-stretch:75%;font-weight:750;line-height:1.1}
+.weekhead p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.nav{display:flex;gap:6px}
+.nav button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--paper)}
+.note{margin:12px 0 0;padding:10px 12px;border-left:3px solid var(--muted);background:var(--paper);font-size:14px}
+.day{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:14px 0;border-top:1px solid var(--line)}
+.day:first-of-type{border-top:0}
+.dlabel{font-stretch:75%;font-weight:700;font-size:15px;line-height:1.1;padding-top:3px}
+.dlabel small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.day.today .dlabel{color:var(--swim)}
+.day.today .dlabel::after{content:"Today";display:block;font-size:12px;font-weight:600;margin-top:3px}
+.rest{color:var(--muted);font-size:14px;padding-top:3px}
+.sess{display:block;width:100%;text-align:left;border:0;background:none;padding:6px 8px 8px 12px;margin:0 0 4px;border-radius:6px;position:relative}
+.sess:hover{background:var(--tap)}
+.sess::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:2px;background:var(--c)}
+.sess .t{display:flex;justify-content:space-between;gap:10px;font-weight:650}
+.sess .t em{font-style:normal;font-weight:500;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sess .d{font-size:14px;color:var(--muted);margin-top:1px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.tag{font-size:12px;padding:1px 7px;border-radius:9px;border:1px solid var(--line);color:var(--muted)}
+.tag.done{background:var(--bike);border-color:var(--bike);color:var(--paper)}
+.tag.missed,.tag.dropped{border-color:var(--warn);color:var(--warn)}
+.tag.adapt{border-color:var(--swim);color:var(--swim)}
+.sess.off{opacity:.5}
+.sess.off .t span{text-decoration:line-through}
+.changes{margin:22px 0 0}
+.changes h3,.panel h3{font-size:17px;font-stretch:87%;margin:0 0 6px}
+.changes li{font-size:14px;margin:4px 0}
+.changes ul{padding-left:18px;margin:0}
+
+/* form */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 10px}
+.stat b{display:block;font-size:40px;font-stretch:62%;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.chart{width:100%;height:auto;display:block}
+.panel{background:var(--paper);border-radius:10px;padding:14px 14px 10px;margin:14px 0}
+.explain{font-size:14px;color:var(--muted)}
+
+/* settings */
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.grid7 label{font-size:12px;color:var(--muted);text-align:center}
+.grid7 input{width:100%;text-align:center;padding:8px 2px}
+.field{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.field:first-of-type{border-top:0}
+input[type=number],input[type=date],input[type=text]{background:var(--stone);border:1px solid var(--line);border-radius:6px;padding:7px 8px;min-width:0}
+.field input{width:140px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:22px;padding:9px 16px;font-weight:600}
+.btn.ghost{background:none;color:var(--ink);border-color:var(--line)}
+.btn.danger{background:none;color:var(--warn);border-color:var(--warn)}
+
+/* tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:4px;
+  background:var(--paper);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0));z-index:5}
+.tabs button{flex:1;max-width:160px;border:0;background:none;padding:10px 4px;border-radius:8px;font-weight:600;color:var(--muted)}
+.tabs button[aria-selected=true]{color:var(--ink);background:var(--tap)}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:9}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:560px;max-height:88vh;overflow-y:auto;overscroll-behavior:contain;margin:0 auto;background:var(--paper);border-radius:16px 16px 0 0;
+  padding:18px 20px calc(20px + env(safe-area-inset-bottom,0));z-index:10;transform:translateY(105%);transition:transform .22s ease}
+.open .scrim{display:block}.open .sheet{transform:none}
+.sheet h3{margin:0;font-size:24px;font-stretch:75%}
+.sheet .d{color:var(--muted);font-size:14px;margin:4px 0 14px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:none;padding:11px 4px;font-weight:600}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;font-size:15px}
+.row input[type=range]{flex:1;accent-color:var(--swim)}
+.rpe{font-variant-numeric:tabular-nums;min-width:9ch;text-align:right;color:var(--muted);font-size:14px}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.day.drop{background:var(--tap);outline:2px dashed var(--swim);outline-offset:-2px;border-radius:8px}
+.dragghost{position:fixed;z-index:12;pointer-events:none;background:var(--paper);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.25);padding:8px 12px;font-weight:650;max-width:70vw;transform:translate(-50%,-120%)}
+.sess.lifting{opacity:.35}
+.sess{touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.note.warn{border-left-color:var(--warn)}
+.days7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.days7 button{border:1px solid var(--line);background:none;border-radius:8px;padding:8px 0;font-size:13px;font-weight:600}
+.days7 button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.sheet h4{margin:16px 0 6px;font-size:14px;font-stretch:87%;color:var(--muted);font-weight:600}
+.link{background:none;border:0;color:var(--swim);font-weight:600;padding:0;font-size:14px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:18px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:11}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav class="tabs" role="tablist">
+  <button role="tab" data-tab="week" aria-selected="true">Week</button>
+  <button role="tab" data-tab="form">Form</button>
+  <button role="tab" data-tab="settings">Settings</button>
+</nav>
+<div id="sheetwrap"><div class="scrim" id="scrim"></div><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* Adaptive 70.3 planner engine. Pure functions: plan = build(settings, logs, today). */
+(function (root) {
+  'use strict';
+
+  // ---------- dates (UTC, "YYYY-MM-DD") ----------
+  const D = s => new Date(s + 'T00:00:00Z');
+  const iso = d => d.toISOString().slice(0, 10);
+  const addDays = (s, n) => { const d = D(s); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
+  const diffDays = (a, b) => Math.round((D(b) - D(a)) / 86400000);
+  const mondayOf = s => { const d = D(s); const wd = (d.getUTCDay() + 6) % 7; return addDays(s, -wd); };
+  const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+  const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  const DEFAULTS = {
+    raceDate: '2027-05-23',
+    startDate: '2026-10-19',
+    availability: [0, 120, 120, 120, 90, 360, 300], // minutes Mon..Sun
+    maxWeekHours: 18,
+    bikeFrom: '2026-11-16',   // road bike arrives
+    poolFrom: '',             // '' = no pool yet
+    maxLongRunKm: 26,
+    startLongRunKm: 14,
+    startCTL: 35,
+    paces: { easy: 390, steady: 370, fast: 315, goal: 298 } // sec/km
+  };
+
+  // Intensity factors per session kind -> TSS = h * IF^2 * 100
+  const IF = { recovery: 0.6, easy: 0.66, endurance: 0.72, tempo: 0.83, threshold: 0.92, race: 0.86, dryland: 0.55, race_day: 0.85 };
+
+  // ---------- season structure ----------
+  function phases(settings) {
+    const start = mondayOf(settings.startDate);
+    const raceMon = mondayOf(settings.raceDate);
+    const n = diffDays(start, raceMon) / 7 + 1;            // weeks incl. race week
+    const tail = ['peak', 'peak', 'peak', 'taper', 'race'];
+    const build2 = 6, build1 = 7;
+    const base = Math.max(0, n - tail.length - build2 - build1);
+    const seq = [];
+    for (let i = 0; i < base; i++) seq.push('base');
+    for (let i = 0; i < build1; i++) seq.push('build1');
+    for (let i = 0; i < build2; i++) seq.push('build2');
+    seq.push(...tail);
+    const out = seq.slice(-n);
+    return out.map((p, i) => ({ index: i, phase: p, monday: addDays(start, i * 7) }));
+  }
+
+  // Target hours: ramp within each phase, every 4th week of base/build is recovery.
+  function weekTargets(weeks, settings) {
+    const ranges = { base: [7, 10.5], build1: [10.5, 13.5], build2: [13.5, 16] };
+    const peakMax = Math.min(settings.maxWeekHours, 18.5);
+    let sinceRecovery = 0;
+    const count = {}; weeks.forEach(w => count[w.phase] = (count[w.phase] || 0) + 1);
+    const seen = {};
+    let peakI = 0;
+    weeks.forEach(w => {
+      const k = seen[w.phase] = (seen[w.phase] || 0) + 1;
+      w.recovery = false;
+      if (ranges[w.phase]) {
+        const [a, b] = ranges[w.phase];
+        const t = count[w.phase] > 1 ? (k - 1) / (count[w.phase] - 1) : 1;
+        w.hours = a + (b - a) * t;
+        sinceRecovery++;
+        if (sinceRecovery === 4) { w.recovery = true; w.hours *= 0.65; sinceRecovery = 0; }
+      } else if (w.phase === 'peak') {
+        w.hours = [16, peakMax, 15][peakI++] || 15;
+      } else if (w.phase === 'taper') w.hours = 10;
+      else w.hours = 5; // race week incl. race
+      w.hours = Math.min(w.hours, settings.maxWeekHours);
+    });
+    return weeks;
+  }
+
+  // Session templates: [sport, kind, share, role, label, prefDays]
+  // role: key | hard | easy ; prefDays: indices Mon=0
+  const T = {
+    base: [
+      ['swim', 'easy', .08, 'easy', 'Technique swim', [2, 4, 0]],
+      ['swim', 'endurance', .09, 'easy', 'Endurance swim', [4, 2, 0]],
+      ['bike', 'endurance', .13, 'easy', 'Steady ride', [3, 1, 2]],
+      ['bike', 'tempo', .10, 'hard', 'Cadence & tempo ride', [1, 3]],
+      ['bike', 'endurance', .26, 'key', 'Long ride', [5, 6]],
+      ['run', 'easy', .10, 'easy', 'Easy run', [2, 4, 0]],
+      ['run', 'tempo', .09, 'hard', 'Tempo run', [3, 1]],
+      ['run', 'endurance', .15, 'key', 'Long run', [6, 5]]
+    ],
+    build1: [
+      ['swim', 'easy', .07, 'easy', 'Technique swim', [2, 4, 0]],
+      ['swim', 'threshold', .09, 'hard', 'Threshold swim', [4, 2]],
+      ['bike', 'threshold', .12, 'hard', 'Threshold ride', [1, 3]],
+      ['bike', 'endurance', .27, 'key', 'Long ride', [5, 6]],
+      ['bike', 'easy', .06, 'easy', 'Spin', [4, 2, 0]],
+      ['run', 'tempo', .09, 'hard', 'Tempo run', [3, 1]],
+      ['run', 'easy', .08, 'easy', 'Easy run', [2, 4, 0]],
+      ['run', 'endurance', .15, 'key', 'Long run', [6, 5]],
+      ['brick', 'tempo', .07, 'key', 'Brick run off the bike', [5]]
+    ],
+    build2: [
+      ['swim', 'threshold', .09, 'hard', 'Threshold swim', [2, 4]],
+      ['swim', 'endurance', .08, 'easy', 'Endurance swim', [4, 2, 0]],
+      ['bike', 'race', .13, 'hard', 'Race-pace ride', [1, 3]],
+      ['bike', 'endurance', .27, 'key', 'Long ride', [5, 6]],
+      ['run', 'race', .09, 'hard', 'Race-pace run', [3, 1]],
+      ['run', 'easy', .07, 'easy', 'Easy run', [2, 4, 0]],
+      ['run', 'endurance', .17, 'key', 'Long run', [6, 5]],
+      ['brick', 'race', .10, 'key', 'Brick run off the bike', [5]]
+    ],
+    taper: [
+      ['swim', 'race', .20, 'hard', 'Sharpening swim', [1, 3]],
+      ['bike', 'race', .35, 'key', 'Race-pace ride', [5, 2]],
+      ['run', 'race', .25, 'hard', 'Race-pace run', [3, 1]],
+      ['brick', 'race', .20, 'key', 'Short brick', [5]]
+    ],
+    race: [
+      ['swim', 'easy', .12, 'easy', 'Open-water shakeout', [1, 3]],
+      ['bike', 'easy', .15, 'easy', 'Spin with openers', [2, 4]],
+      ['run', 'easy', .08, 'easy', 'Shakeout run', [3, 5]],
+      ['race', 'race_day', .65, 'key', 'IRONMAN 70.3 Pays d\u2019Aix', [6]]
+    ]
+  };
+  T.peak = T.build2;
+
+  const LIGHT_ROTATION = ['run', 'swim', 'bike']; // which sport is kept moderate each week
+
+  function fmtPace(sec) { const m = Math.floor(sec / 60), s = Math.round(sec % 60); return m + ':' + String(s).padStart(2, '0'); }
+
+  function describe(s, settings, ctx) {
+    const P = settings.paces, m = s.min;
+    if (s.sport === 'run' || s.sport === 'brick') {
+      if (s.label === 'Long run') return `${(m * 60 / P.easy).toFixed(1)} km at ${fmtPace(P.easy - 10)}\u2013${fmtPace(P.easy + 10)}/km, conversational`;
+      if (s.kind === 'tempo') {
+        const reps = Math.max(2, Math.round((m - 25) / 12));
+        return s.sport === 'brick'
+          ? `Straight off the bike: 10 min easy, then ${Math.max(10, m - 15)} min at ${fmtPace(P.steady)}/km`
+          : `15 min easy, ${reps}\u00d78 min at ${fmtPace(P.fast + 20)}\u2013${fmtPace(P.fast + 35)}/km (2 min jog), cool down`;
+      }
+      if (s.kind === 'race') {
+        const blocks = Math.max(2, Math.round((m - 20) / 15));
+        return s.sport === 'brick'
+          ? `Off the long ride: ${Math.max(15, m - 10)} min building to goal pace ${fmtPace(P.goal)}\u2013${fmtPace(P.goal + 10)}/km`
+          : `15 min easy, ${blocks}\u00d710 min at goal pace ${fmtPace(P.goal)}\u2013${fmtPace(P.goal + 10)}/km, 2 min float`;
+      }
+      return `Easy at ${fmtPace(P.easy)}/km or slower; finish with 4\u00d720 s strides`;
+    }
+    if (s.sport === 'bike') {
+      const where = s.indoor ? 'Gym bike: ' : '';
+      if (s.kind === 'threshold') return where + `${Math.max(2, Math.round((m - 25) / 15))}\u00d710 min hard but steady (RPE 7\u20138), 5 min easy between`;
+      if (s.kind === 'race') return where + `${Math.round(m * 0.6)} min at race effort (RPE 6\u20137), aero, fuel every 20 min`;
+      if (s.kind === 'tempo') return where + `Alternate 5 min high cadence (95+) with 5 min tempo (RPE 6)`;
+      if (s.label === 'Long ride') return where + `Steady RPE 4\u20135, practise eating 60\u201380 g carbs per hour`;
+      return where + `Easy spin, RPE 3\u20134`;
+    }
+    if (s.sport === 'swim') {
+      if (s.dryland) return 'No pool yet: band pulls, lat work, core and shoulder mobility';
+      if (s.kind === 'threshold') return `${Math.max(4, Math.round(m / 6))}\u00d7100 m strong, 15 s rest, plus warm-up drills`;
+      if (s.kind === 'race') return 'Race-pace 200s with sighting every 6 strokes';
+      if (s.label === 'Technique swim') return 'Drills: catch-up, fingertip drag, single-arm; then easy 400s';
+      return `Continuous ${Math.round(m * 0.045 * 10) / 10} km, smooth and relaxed`;
+    }
+    if (s.sport === 'race') return '1.9 km swim, 90 km bike, 21.1 km run. Pace the bike, race the run.';
+    return '';
+  }
+
+  const isHardRole = s => s.role === 'hard' || (s.role === 'key' && (s.kind === 'race' || s.kind === 'threshold'));
+
+  // Place sessions into days respecting availability and hard-day spacing.
+  function placeWeek(week, sessions, availability) {
+    const cap = availability.slice();
+    const days = [0, 1, 2, 3, 4, 5, 6].map(() => []);
+    const hardDay = new Array(7).fill(false), legHard = new Array(9).fill(false);
+    const order = sessions.slice().sort((a, b) => {
+      const r = { key: 0, hard: 1, easy: 2 };
+      return (r[a.role] - r[b.role]) || (b.min - a.min);
+    });
+    const trimmed = [];
+    for (const s of order) {
+      if (s.sport === 'brick') { // must follow the long ride
+        const ld = days.findIndex(d => d.some(x => x.label === 'Long ride'));
+        if (ld >= 0 && cap[ld] >= 15) { s.min = Math.min(s.min, cap[ld]); cap[ld] -= s.min; s.day = ld; days[ld].push(s); if (isHardRole(s)) { hardDay[ld] = true; legHard[ld] = true; } }
+        else trimmed.push(s.label);
+        continue;
+      }
+      const prefs = s.prefDays.concat([0, 1, 2, 3, 4, 5, 6].filter(i => !s.prefDays.includes(i)));
+      const hard = isHardRole(s);
+      const leg = s.sport !== 'swim';
+      const ok = i => !hard || (!hardDay[i] && (!leg || (!legHard[i - 1] && !legHard[i + 1])));
+      const noLong = i => !hard || !days[i].some(x => x.label === 'Long run' || x.label === 'Long ride');
+      let pick = prefs.find(i => cap[i] >= s.min && ok(i) && noLong(i));
+      if (pick === undefined) { // shorten into a safe day rather than stack hard work
+        const best = prefs.filter(i => ok(i) && noLong(i) && cap[i] >= Math.max(20, s.min * 0.6))[0];
+        if (best !== undefined) { trimmed.push(s.label); s.min = cap[best]; pick = best; }
+      }
+      if (pick === undefined) { trimmed.push(s.label); continue; }
+      cap[pick] -= s.min; s.day = pick; days[pick].push(s);
+      if (hard) { hardDay[pick] = true; if (leg) legHard[pick] = true; }
+    }
+    days.forEach((d, i) => d.forEach(s => { s.date = addDays(week.monday, i); }));
+    week.trimmed = trimmed;
+    return days;
+  }
+
+  // Build the untouched plan.
+  function generate(settings) {
+    const weeks = weekTargets(phases(settings), settings);
+    let longRunMin = settings.startLongRunKm * settings.paces.easy / 60 / 1.07;
+    const capLongRun = settings.maxLongRunKm * settings.paces.easy / 60;
+    weeks.forEach(w => {
+      const tpl = T[w.phase];
+      const light = w.phase === 'race' || w.phase === 'taper' ? null : LIGHT_ROTATION[w.index % 3];
+      w.lightSport = light;
+      const totalMin = w.hours * 60;
+      const sessions = tpl.map((t, i) => {
+        let [sport, kind, share, role, label, prefDays] = t;
+        let min = totalMin * share;
+        if (w.recovery && role !== 'key') { if (role === 'hard') label = label.replace(/Threshold|Race-pace|Tempo|Cadence & tempo/, 'Easy'); kind = kind === 'endurance' ? 'endurance' : 'easy'; role = 'easy'; }
+        if (w.recovery && role === 'key' && kind !== 'endurance') kind = 'endurance';
+        const sportForLight = sport === 'brick' ? 'run' : sport;
+        if (light && sportForLight === light) {
+          min *= 0.85;
+          if (role === 'hard') { kind = 'endurance'; role = 'easy'; label = label.replace(/Threshold|Race-pace|Tempo|Cadence & tempo/, 'Steady'); }
+        }
+        const s = { id: `w${w.index}-${i}`, week: w.index, sport, kind, role, label, prefDays, min, planned: true };
+        if (label === 'Long run') {
+          const phaseCapKm = { base: 18, build1: 21 }[w.phase] || settings.maxLongRunKm;
+          const cap = Math.min(capLongRun, phaseCapKm * settings.paces.easy / 60);
+          if (w.recovery) s.min = longRunMin * 0.7;
+          else if (light === 'run') s.min = Math.min(longRunMin, cap);          // hold, don't grow
+          else { s.min = Math.min(longRunMin * 1.07, cap); longRunMin = Math.max(longRunMin, s.min); }
+        }
+        return s;
+      });
+      // equipment constraints
+      sessions.forEach(s => {
+        const date = w.monday;
+        if (s.sport === 'bike' && settings.bikeFrom && date < mondayOf(settings.bikeFrom)) {
+          s.indoor = true; s.min = Math.min(s.min, s.label === 'Long ride' ? 90 : 75);
+        }
+        if (s.sport === 'swim' && (!settings.poolFrom || date < mondayOf(settings.poolFrom))) {
+          s.dryland = true; s.kind = 'dryland'; s.role = 'easy'; s.min = Math.min(s.min, 40); s.label = 'Swim strength';
+        }
+        s.min = Math.round(s.min / 5) * 5;
+      });
+      w.days = placeWeek(w, sessions.filter(s => s.min >= 15), settings.availability);
+      w.days.forEach(d => d.forEach(s => { s.plannedMin = s.min; s.plannedKind = s.kind; }));
+    });
+    return weeks;
+  }
+
+  const tssOf = (min, kind) => (min / 60) * Math.pow(IF[kind] || 0.7, 2) * 100;
+  const ifFromRpe = r => clamp(0.5 + r * 0.05, 0.55, 1.0);
+  const doneTss = (s, log) => {
+    if (!log || log.status === 'missed') return 0;
+    const min = log.min != null ? log.min : s.min;
+    const f = log.rpe ? ifFromRpe(log.rpe) : (IF[s.kind] || 0.7);
+    return (min / 60) * f * f * 100;
+  };
+  const EXPECTED_RPE = { recovery: 3, easy: 4, endurance: 5, dryland: 4, tempo: 6, race: 7, threshold: 8, race_day: 8 };
+
+  function ease(s, reason) {
+    if (s.eased) return;
+    s.eased = reason;
+    s.min = Math.round(s.min * 0.8 / 5) * 5;
+    if (['threshold', 'race', 'tempo'].includes(s.kind)) { s.kind = 'endurance'; s.label = s.label.replace(/Threshold|Race-pace|Tempo|Cadence & tempo|Sharpening/, 'Steady'); }
+  }
+
+  // Replay logs over the plan, day by day, applying adaptations.
+  // Reference trajectory: the untouched plan, every session done as written.
+  function plannedTrajectory(settings) {
+    const weeks = generate(settings);
+    let ctl = settings.startCTL, atl = settings.startCTL; const out = {};
+    weeks.forEach(w => w.days.forEach((d, i) => {
+      const t = d.reduce((a, s) => a + tssOf(s.min, s.kind), 0);
+      ctl += (t - ctl) / 42; atl += (t - atl) / 7;
+      out[addDays(w.monday, i)] = ctl;
+    }));
+    return out;
+  }
+
+  // Your own changes: move a session to another day of its week, or change its length.
+  function applyEdit(w, s, e) {
+    if (!e) return;
+    if (e.min != null && e.min !== s.min) { s.min = e.min; s.userMin = true; }
+    if (e.day != null && e.day !== s.day) {
+      const from = s.day;
+      w.days[from] = w.days[from].filter(x => x !== s);
+      s.userMovedFrom = DAY_NAMES[from]; s.day = e.day; s.date = addDays(w.monday, e.day);
+      w.days[e.day].push(s);
+    }
+  }
+  function checkWeek(w) {
+    const legHard = w.days.map(d => d.some(x => x.sport !== 'swim' && isHardRole(x) && x.status !== 'dropped' && !x.movedTo));
+    w.warnings = [];
+    legHard.forEach((h, i) => { if (h && legHard[i + 1] && !['race', 'taper'].includes(w.phase)) w.warnings.push(`${DAY_NAMES[i]} and ${DAY_NAMES[i + 1]} both have hard bike or run work. Fine occasionally, but watch how your legs feel.`); });
+  }
+
+  const SEASON_PHASES = ['base', 'build1', 'build2', 'peak'];
+  function seasonRescale(weeks, fromWeek, r, settings, lastHours) {
+    const planH = w => w.days.flat().reduce((a, s) => a + (s.sport === 'race' ? 0 : s.plannedMin), 0) / 60;
+    let allowed = lastHours;                      // grow from what you actually did, max +10%/week
+    weeks.forEach((w, j) => {
+      if (j <= fromWeek || !SEASON_PHASES.includes(w.phase)) return;
+      let f;
+      if (r < 1) {
+        if (w.recovery) f = clamp(allowed * 0.7 / planH(w), 0.6, 1);
+        else { allowed *= 1.1; f = clamp(allowed / planH(w), 0.6, 1); allowed = planH(w) * f; }
+      } else f = Math.min(r, 1.1);
+      w.seasonFactor = f;
+      w.days.flat().forEach(s => {
+        if (s.userMin || s.sport === 'race' || s.status === 'dropped') return;
+        if (s.label === 'Long run' && f > 1) { s.min = s.plannedMin; return; }   // long run has its own progression
+        s.min = Math.max(15, Math.round(s.plannedMin * f / 5) * 5);
+      });
+      // respect daily availability and the weekly ceiling
+      w.days.forEach((d, i) => {
+        const tot = d.reduce((a, x) => a + x.min, 0), cap = settings.availability[i];
+        if (tot > cap && cap > 0) d.forEach(x => { if (!x.userMin) x.min = Math.max(15, Math.round(x.min * cap / tot / 5) * 5); });
+      });
+      const wk = w.days.flat().reduce((a, x) => a + x.min, 0), maxM = settings.maxWeekHours * 60;
+      if (wk > maxM) w.days.flat().forEach(x => { if (!x.userMin) x.min = Math.round(x.min * maxM / wk / 5) * 5; });
+    });
+  }
+
+  function build(settingsIn, logs, today, edits) {
+    const settings = Object.assign({}, DEFAULTS, settingsIn || {});
+    settings.paces = Object.assign({}, DEFAULTS.paces, (settingsIn || {}).paces || {});
+    logs = logs || {};
+    const weeks = generate(settings);
+    edits = edits || {};
+    weeks.forEach(w => w.days.flat().filter(x => edits[x.id]).forEach(x => applyEdit(w, x, edits[x.id])));
+    weeks.forEach(checkWeek);
+    const planned = plannedTrajectory(settings);
+    reschedule.edits = edits;
+    let season = null;
+    const events = [];
+    const series = [];
+    let ctl = settings.startCTL, atl = settings.startCTL;
+    const start = weeks[0].monday;
+    const end = settings.raceDate;
+    let lastLongRun = null, lastLongRide = null;
+    let easeUntil = null, easeReason = null;
+
+    const sessionsOn = date => {
+      const w = weeks[Math.floor(diffDays(start, date) / 7)];
+      return w ? w.days[(diffDays(start, date)) % 7] : [];
+    };
+
+    for (let wi = 0; wi < weeks.length; wi++) {
+      const w = weeks[wi];
+      // progression guard: long sessions can't jump far past what was actually completed
+      w.days.flat().forEach(s => {
+        if (logs[s.id] || s.userMin) return;   // your own length always wins
+        if (s.label === 'Long run' && lastLongRun && s.min > lastLongRun * 1.2 && w.monday <= today) {
+          const n = Math.round(lastLongRun * 1.15 / 5) * 5;
+          events.push({ date: s.date, week: wi, text: `Long run capped at ${n} min (last completed was ${Math.round(lastLongRun)} min)` });
+          s.min = n; s.capped = true;
+        }
+        if (s.label === 'Long ride' && lastLongRide && s.min > lastLongRide * 1.25 && w.monday <= today) {
+          const n = Math.round(lastLongRide * 1.2 / 5) * 5;
+          events.push({ date: s.date, week: wi, text: `Long ride capped at ${n} min (last completed was ${Math.round(lastLongRide)} min)` });
+          s.min = n; s.capped = true;
+        }
+      });
+
+      let plannedLoggedTss = 0, actualTss = 0, anyLogged = false, loggedN = 0;
+      for (let di = 0; di < 7; di++) {
+        const date = addDays(w.monday, di);
+        const day = w.days[di];
+        const past = date <= today;
+        if (easeUntil && date <= easeUntil) day.forEach(s => { if (!logs[s.id]) ease(s, easeReason); });
+
+        let dayTss = 0;
+        for (const s of day.slice()) {
+          const log = logs[s.id];
+          if (log) {
+            s.log = log; anyLogged = true; loggedN++;
+            plannedLoggedTss += tssOf(s.min, s.kind);
+            const t = doneTss(s, log); dayTss += t; actualTss += t;
+            const m = log.min != null ? log.min : s.min;
+            if (log.status !== 'missed') {
+              if (s.label === 'Long run') lastLongRun = Math.max(m, lastLongRun ? lastLongRun * 0.85 : 0);
+              if (s.label === 'Long ride') lastLongRide = Math.max(m, lastLongRide ? lastLongRide * 0.85 : 0);
+            }
+            if (log.status === 'missed' && (s.role === 'key' || s.role === 'hard') && !s.movedFrom) reschedule(w, di, s, settings, events, logs);
+          } else if (past && !(s.sport === 'race')) s.unlogged = date < today;
+          else if (!past) dayTss += tssOf(s.min, s.kind); // projection
+        }
+        ctl += (dayTss - ctl) / 42; atl += (dayTss - atl) / 7;
+        const tsb = ctl - atl;
+        series.push({ date, ctl, atl, tsb, projected: !past });
+
+        if (past) {
+          // fatigue guard 1: deep negative form
+          if (tsb < -25 && !(easeUntil && easeUntil >= addDays(date, 1))) {
+            easeUntil = addDays(date, 3); easeReason = 'Form dropped below \u221225';
+            events.push({ date, week: wi, text: `Form at ${tsb.toFixed(0)}: next 3 days eased (shorter, no intensity)` });
+          }
+          // fatigue guard 2: easy sessions feeling hard
+          const recent = [];
+          for (let k = 0; k < 7 && recent.length < 3; k++) {
+            sessionsOn(addDays(date, -k)).forEach(s => { if (s.log && s.log.rpe && s.log.status !== 'missed' && EXPECTED_RPE[s.plannedKind] <= 5) recent.push(s.log.rpe - EXPECTED_RPE[s.plannedKind]); });
+          }
+          if (recent.length >= 2 && recent.reduce((a, b) => a + b, 0) / recent.length >= 3 && !(easeUntil && easeUntil >= addDays(date, 1))) {
+            easeUntil = addDays(date, 2); easeReason = 'Easy sessions felt hard';
+            events.push({ date, week: wi, text: 'Easy sessions are feeling hard: next 2 days eased' });
+          }
+        }
+      }
+      w.plannedTss = w.days.flat().reduce((a, s) => a + tssOf(s.plannedMin, s.plannedKind), 0);
+      w.actualTss = actualTss;
+      w.compliance = plannedLoggedTss ? actualTss / plannedLoggedTss : null;
+
+      const weekOver = addDays(w.monday, 6) < today;
+      // season check: real fitness vs where the plan expected you to be
+      if (weekOver) {
+        const span = weeks.slice(Math.max(0, wi - 1), wi + 1).map(x => x.days.flat()).flat();
+        const coverage = span.filter(x => logs[x.id]).length / Math.max(1, span.length);
+        const endDate = addDays(w.monday, 6), exp = planned[endDate];
+        if (coverage >= 0.4 && exp) {
+          let r = ctl / exp; if (Math.abs(r - 1) < 0.05) r = 1;
+          const prevR = season ? season.r : 1;
+          season = { r, actual: ctl, expected: exp, week: wi, date: endDate };
+          const lastHours = w.days.flat().reduce((a, x) => { const l = logs[x.id]; return a + (l && l.status !== 'missed' ? (l.min != null ? l.min : x.min) : 0); }, 0) / 60;
+          if (r !== 1 || prevR !== 1) seasonRescale(weeks, wi, r, settings, Math.max(lastHours, 3));
+          if (Math.abs(r - prevR) >= 0.03) {
+            const pct = Math.round(r * 100);
+            events.push({ date: endDate, week: wi + 1, season: true, text: r === 1
+              ? `Season check: fitness ${ctl.toFixed(0)} is back on plan, so the rest of the season returns to the original curve`
+              : r < 1 ? `Season check: fitness ${ctl.toFixed(0)} vs ${exp.toFixed(0)} expected (${pct}%). Upcoming weeks now grow from what you actually did, at most 10% a week, until they rejoin the plan`
+                      : `Season check: fitness ${ctl.toFixed(0)} vs ${exp.toFixed(0)} expected (${pct}%). You're ahead, so the remaining build is raised ${Math.round((Math.min(r, 1.1) - 1) * 100)}% within your hour limits` });
+          }
+        }
+      }
+      // load guard: big miss -> next week resumes gently
+      const next = weeks[wi + 1];
+      if (weekOver && loggedN >= 0.5 * w.days.flat().length && w.compliance < 0.6 && next && !next.recovery && !['taper', 'race'].includes(next.phase)) {
+        const nextTss = next.days.flat().reduce((a, s) => a + tssOf(s.min, s.kind), 0);
+        const f = clamp((actualTss * 1.25 + 0.4 * nextTss) / nextTss, 0.7, 1);
+        if (f < 0.98) {
+          next.days.flat().forEach(s => { if (!logs[s.id] && !s.userMin && s.sport !== 'race') s.min = Math.max(15, Math.round(s.min * f / 5) * 5); });
+          next.scaled = f;
+          events.push({ date: addDays(next.monday, 0), week: wi + 1, text: `Last week landed at ${Math.round(w.compliance * 100)}% of plan, so this week is scaled to ${Math.round(f * 100)}% to rebuild safely` });
+        }
+      }
+    }
+
+    const ti = clamp(diffDays(start, today), 0, series.length - 1);
+    const now = series[ti] || series[0];
+    const race = series.find(p => p.date === end) || series[series.length - 1];
+    const currentWeek = clamp(Math.floor(diffDays(start, today) / 7), 0, weeks.length - 1);
+    weeks.forEach(checkWeek);
+    series.forEach(p => { p.planned = planned[p.date]; });
+    return { settings, weeks, series, events, now, race, currentWeek, today, season, daysToRace: diffDays(today, end) };
+  }
+
+  // Move a missed key/hard session to a later day in the same week, bumping easy work if needed.
+  function reschedule(w, fromDay, s, settings, events, logs) {
+    const used = i => w.days[i].filter(x => x.status !== 'dropped' && !(x.log && x.log.status === 'missed')).reduce((a, x) => a + x.min, 0);
+    const hardOn = i => i >= 0 && i < 7 && w.days[i].some(x => x !== s && isHardRole(x) && !(x.log && x.log.status === 'missed'));
+    const isHard = isHardRole(s);
+    let best = null;
+    for (let i = fromDay + 1; i < 7; i++) {
+      if (w.days[i].some(x => logs[x.id])) continue;            // don't rewrite a day already logged
+      const longHere = w.days[i].some(x => x.label === 'Long run' || x.label === 'Long ride');
+      if (longHere && (isHard || /^Long/.test(s.label))) continue;
+      if (isHard && (hardOn(i) || hardOn(i - 1) || hardOn(i + 1))) continue;
+      const free = settings.availability[i] - used(i);
+      const need = Math.round(s.plannedMin * 0.75);
+      const easy = w.days[i].filter(x => x.role === 'easy' && !logs[x.id]);
+      const bumpable = easy.reduce((a, x) => a + x.min, 0);
+      if (free + bumpable < need) continue;
+      const bump = Math.max(0, need - free);
+      const cost = bump + (i - fromDay) * 5;                     // prefer fewer drops, sooner
+      if (!best || cost < best.cost) best = { i, cost, free, bump, easy };
+    }
+    if (!best) {
+      events.push({ date: s.date, week: w.index, text: `${s.label} missed with no safe slot left this week, so it's dropped rather than crammed in` });
+      return;
+    }
+    let toBump = best.bump;
+    for (const x of best.easy.sort((a, b) => a.min - b.min)) {
+      if (toBump <= 0) break;
+      x.status = 'dropped'; x.droppedFor = s.label; toBump -= x.min;
+      events.push({ date: x.date, week: w.index, text: `${x.label} dropped on ${DAY_NAMES[best.i]} to make room` });
+    }
+    const copy = Object.assign({}, s, {
+      id: s.id + 'm', movedFrom: DAY_NAMES[fromDay], day: best.i, date: addDays(w.monday, best.i),
+      min: Math.round(Math.min(s.plannedMin, best.free + best.bump + Math.max(0, -toBump)) / 5) * 5, log: undefined
+    });
+    w.days[best.i].unshift(copy);
+    if (logs[copy.id] === undefined && reschedule.edits && reschedule.edits[copy.id]) applyEdit(w, copy, reschedule.edits[copy.id]);
+    s.movedTo = DAY_NAMES[best.i];
+    events.push({ date: s.date, week: w.index, text: `${s.label} moved from ${DAY_NAMES[fromDay]} to ${DAY_NAMES[best.i]} (${copy.min} min)` });
+  }
+
+  function toCSV(model) {
+    const rows = [['Week', 'Phase', 'Date', 'Day', 'Sport', 'Session', 'Minutes', 'Details', 'Status', 'Logged min', 'RPE']];
+    model.weeks.forEach(w => w.days.forEach((d, i) => d.forEach(s => {
+      const st = s.status === 'dropped' ? 'dropped' : s.log ? s.log.status : '';
+      rows.push([w.index + 1, w.phase, s.date, DAY_NAMES[i], s.sport, s.label, s.min, describe(s, model.settings), st, s.log && s.log.min != null ? s.log.min : '', s.log && s.log.rpe || '']);
+    })));
+    return rows.map(r => r.map(c => /[",;\n]/.test(String(c)) ? '"' + String(c).replace(/"/g, '""') + '"' : c).join(',')).join('\n');
+  }
+
+  const api = { DEFAULTS, build, describe, toCSV, addDays, diffDays, mondayOf, DAY_NAMES, tssOf, fmtPace };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.Engine = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function(){
+'use strict';
+const E = window.Engine, KEY = 'aix703.v1';
+const $ = s => document.querySelector(s);
+const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const localISO = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+const COL = { swim:'var(--swim)', bike:'var(--bike)', run:'var(--run)', brick:'var(--run)', race:'var(--race)' };
+const PHASE = { base:'Base', build1:'Build 1', build2:'Build 2', peak:'Peak', taper:'Taper', race:'Race week' };
+const SPORT = { swim:'Swim', bike:'Bike', run:'Run' };
+const hm = m => { m = Math.round(m); const h = Math.floor(m/60); return h ? h + 'h' + (m%60 ? String(m%60).padStart(2,'0') : '') : m + ' min'; };
+const fmtDay = iso => { const d = new Date(iso + 'T00:00:00Z'); return d.getUTCDate() + ' ' + d.toLocaleString('en-GB',{month:'short',timeZone:'UTC'}); };
+
+let state = load();
+let ui = { tab:'week', week:null };
+let model;
+
+function load(){
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.settings) { s.edits = s.edits || {}; return s; } } catch(e){}
+  return { settings: { startDate: '2026-10-19' }, logs: {}, edits: {} };
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){ toast('Couldn\u2019t save on this device'); } }
+function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove('show'), 2200); }
+
+function rebuild(){
+  model = E.build(state.settings, state.logs, localISO(), state.edits);
+  if (ui.week == null || ui.week >= model.weeks.length) ui.week = model.currentWeek;
+}
+
+// ---------- season strip ----------
+function strip(){
+  const W = model.weeks, n = W.length, bw = 12, H = 84, VW = n*bw;
+  const mins = w => { const t = {swim:0,bike:0,run:0}; w.days.flat().forEach(s => { if (s.status==='dropped' || s.movedTo) return; const k = s.sport==='brick'?'run':s.sport==='race'?'bike':s.sport; if (t[k]!=null) t[k]+=s.min; }); return t; };
+  const all = W.map(mins), max = Math.max(...all.map(t => t.swim+t.bike+t.run));
+  let bars = '', phases = '', prev = null;
+  W.forEach((w,i) => {
+    const x = i*bw, t = all[i]; let y = H;
+    const sel = i === ui.week;
+    bars += `<g class="bar" data-w="${i}"><rect x="${x}" y="0" width="${bw}" height="${H+22}" fill="transparent"/>`;
+    for (const k of ['bike','run','swim']) { const h = t[k]/max*(H-10); y -= h; if (h>0) bars += `<rect x="${x+2}" y="${y.toFixed(1)}" width="${bw-4}" height="${Math.max(0,h-1).toFixed(1)}" rx="1" fill="${COL[k]}" opacity="${sel?1:i<model.currentWeek?.4:.78}"/>`; }
+    if (sel) bars += `<rect x="${x+1}" y="${H+3}" width="${bw-2}" height="2.5" rx="1" fill="var(--ink)"/>`;
+    bars += '</g>';
+    if (w.phase !== prev) { const short = {base:'Base',build1:'Build 1',build2:'Build 2',peak:'Peak',taper:'',race:''}[w.phase];
+      phases += `<text x="${x+2}" y="${H+19}" font-size="9" fill="var(--muted)">${short}</text>`;
+      if (i) phases += `<line x1="${x}" x2="${x}" y1="${H+8}" y2="${H+22}" stroke="var(--line)"/>`; prev = w.phase; }
+  });
+  const tx = (model.currentWeek + ((E.diffDays(model.weeks[0].monday, model.today) % 7) / 7)) * bw;
+  return `<svg class="strip" viewBox="0 -12 ${VW} ${H+36}" role="img" aria-label="Season overview: weekly hours by sport. Tap a week to open it.">
+    ${bars}${phases}
+    <line x1="${tx}" x2="${tx}" y1="-8" y2="${H}" stroke="var(--ink)" stroke-width=".8" stroke-dasharray="2 2"/>
+    <text x="${tx+3}" y="-3" font-size="9" fill="var(--ink)">today</text>
+    <text x="${VW-2}" y="-3" font-size="9" fill="var(--ink)" text-anchor="end">race</text>
+  </svg>
+  <div class="legend"><span><i style="background:var(--swim)"></i>Swim</span><span><i style="background:var(--bike)"></i>Bike</span><span><i style="background:var(--run)"></i>Run</span></div>`;
+}
+// ---------- week view ----------
+function sessionHTML(s){
+  const log = s.log, off = s.status === 'dropped' || (log && log.status === 'missed') || s.movedTo;
+  const tags = [];
+  if (log) tags.push(log.status === 'done' ? `<span class="tag done">Done${log.min!=null && log.min!==s.min ? ' '+log.min+' min' : ''}${log.rpe?', RPE '+log.rpe:''}</span>` : log.status === 'partial' ? `<span class="tag done">Shorter: ${log.min} min${log.rpe?', RPE '+log.rpe:''}</span>` : `<span class="tag missed">Missed</span>`);
+  if (s.movedTo) tags.push(`<span class="tag adapt">Moved to ${s.movedTo}</span>`);
+  if (s.movedFrom) tags.push(`<span class="tag adapt">Moved from ${s.movedFrom}</span>`);
+  if (s.status === 'dropped') tags.push(`<span class="tag dropped">Dropped for ${esc(s.droppedFor)}</span>`);
+  if (s.eased) tags.push(`<span class="tag adapt">Eased: ${esc(s.eased.toLowerCase())}</span>`);
+  if (s.userMovedFrom) tags.push(`<span class="tag adapt">You moved this from ${s.userMovedFrom}</span>`);
+  if (s.userMin) tags.push(`<span class="tag adapt">Length set by you</span>`);
+  if (s.capped) tags.push(`<span class="tag adapt">Capped to your progress</span>`);
+  if (s.unlogged && !log && !s.status) tags.push(`<span class="tag">Not logged</span>`);
+  const clickable = s.status !== 'dropped';
+  return `<button class="sess${off?' off':''}" style="--c:${COL[s.sport]}" ${clickable?`data-s="${s.id}"${!s.log?' data-drag="1"':''}`:'disabled'}>
+    <div class="t"><span>${esc(s.label)}</span><em>${hm(s.min)}</em></div>
+    <div class="d">${esc(E.describe(s, model.settings))}</div>
+    ${tags.length?`<div class="tags">${tags.join('')}</div>`:''}</button>`;
+}
+function weekView(){
+  const w = model.weeks[ui.week];
+  const total = w.days.flat().filter(s => s.status!=='dropped' && !s.movedTo).reduce((a,s)=>a+s.min,0);
+  const notes = [];
+  if (w.recovery) notes.push('Recovery week: volume down, no intensity. Let the last three weeks sink in.');
+  if (w.lightSport) notes.push(`${SPORT[w.lightSport]} is kept moderate this week, so you\u2019re never going hard in all three sports at once.`);
+  if (w.scaled) notes.push(`Scaled to ${Math.round(w.scaled*100)}% after a lighter week, to rebuild safely.`);
+  if (w.seasonFactor && Math.abs(w.seasonFactor - 1) > 0.03) notes.push(`After the season check, this week is set to ${Math.round(w.seasonFactor*100)}% of the original plan.`);
+  if (w.days.flat().some(s => s.dryland)) notes.push('No pool date set yet, so swims are dryland strength. Add a pool date in Settings when you have one.');
+  if (w.days.flat().some(s => s.indoor)) notes.push('Rides are on the gym bike until your road bike arrives.');
+  const ev = model.events.filter(e => e.week === ui.week);
+  const days = w.days.map((d,i) => {
+    const date = E.addDays(w.monday, i);
+    return `<div class="day${date===model.today?' today':''}" data-d="${i}"><div class="dlabel">${E.DAY_NAMES[i]}<small>${fmtDay(date)}</small></div>
+      <div>${d.length ? d.map(sessionHTML).join('') : '<div class="rest">Rest day</div>'}</div></div>`;
+  }).join('');
+  return `
+  <section class="hero">
+    <div class="count"><b>${Math.max(0, model.daysToRace)}</b><span>days to the start line at Aix-en-Provence</span></div>
+    ${strip()}
+  </section>
+  <div class="weekhead">
+    <div><h2>Week ${w.index+1} of ${model.weeks.length}</h2><p>${PHASE[w.phase]}${w.recovery?' (recovery)':''}, ${hm(total)} planned, starting ${fmtDay(w.monday)}</p></div>
+    <div class="nav"><button data-nav="-1" aria-label="Previous week">\u2039</button><button data-nav="0" aria-label="This week" title="This week">\u2022</button><button data-nav="1" aria-label="Next week">\u203A</button></div>
+  </div>
+  ${notes.length?`<p class="note">${notes.join(' ')}</p>`:''}
+  ${(w.warnings||[]).map(t=>`<p class="note warn">${esc(t)}</p>`).join('')}
+  <p class="explain" style="margin:10px 0 0">Tap a session to log or change it. Press and hold to drag it to another day.${weekEdited(w)?' <button class="link" id="resetWeek">Undo my changes this week</button>':''}</p>
+  <div style="margin-top:10px">${days}</div>
+  ${ev.length?`<div class="changes"><h3>What changed this week</h3><ul>${ev.map(e=>`<li>${esc(e.text)}</li>`).join('')}</ul></div>`:''}`;
+}
+
+function weekEdited(w){ return w.days.flat().some(s => state.edits[s.id]); }
+
+// ---------- form view ----------
+function chart(){
+  const S = model.series, n = S.length, W = 340, H = 200, top = 120, gap = 14;
+  const maxC = Math.max(...S.map(p=>Math.max(p.ctl,p.atl)))*1.08;
+  const minT = Math.min(-30, ...S.map(p=>p.tsb)), maxT = Math.max(25, ...S.map(p=>p.tsb));
+  const x = i => i/(n-1)*W, yc = v => top - v/maxC*top, yt = v => top+gap + (maxT - v)/(maxT-minT)*(H-top-gap);
+  const ti = Math.min(n-1, Math.max(0, E.diffDays(S[0].date, model.today)));
+  const path = (from, to, f) => S.slice(from, to+1).map((p,k)=>(k?'L':'M')+x(from+k).toFixed(1)+' '+f(p).toFixed(1)).join('');
+  const area = (from,to) => path(from,to,p=>yt(p.tsb)) + `L${x(to).toFixed(1)} ${yt(0).toFixed(1)}L${x(from).toFixed(1)} ${yt(0).toFixed(1)}Z`;
+  let months = ''; S.forEach((p,i)=>{ if (p.date.endsWith('-01')) months += `<line x1="${x(i)}" x2="${x(i)}" y1="0" y2="${H}" stroke="var(--line)" stroke-width=".5"/><text x="${x(i)+2}" y="${H+11}" font-size="9" fill="var(--muted)">${new Date(p.date+'T00:00:00Z').toLocaleString('en-GB',{month:'short',timeZone:'UTC'})}</text>`; });
+  return `<svg class="chart" viewBox="0 -4 ${W} ${H+18}" role="img" aria-label="Fitness, fatigue and form over the season">
+    ${months}
+    <path d="${path(0,ti,p=>yc(p.atl))}" fill="none" stroke="var(--run)" stroke-width="1" opacity=".55"/>
+    <path d="${S.map((p,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yc(p.planned||0).toFixed(1)).join('')}" fill="none" stroke="var(--muted)" stroke-width="1" opacity=".7"/>
+    <path d="${path(0,ti,p=>yc(p.ctl))}" fill="none" stroke="var(--ink)" stroke-width="2.2"/>
+    <path d="${path(ti,n-1,p=>yc(p.ctl))}" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <path d="${area(0,ti)}" fill="var(--swim)" opacity=".55"/><path d="${area(ti,n-1)}" fill="var(--swim)" opacity=".22"/>
+    <line x1="0" x2="${W}" y1="${yt(0)}" y2="${yt(0)}" stroke="var(--muted)" stroke-width=".5"/>
+    <line x1="${x(ti)}" x2="${x(ti)}" y1="0" y2="${H}" stroke="var(--ink)" stroke-width=".6"/>
+    <text x="${x(n-1)-2}" y="${yc(S[n-1].ctl)-6}" font-size="10" text-anchor="end" fill="var(--ink)">race day ${S[n-1].ctl.toFixed(0)}</text>
+    <text x="2" y="10" font-size="9" fill="var(--muted)">Fitness (bold), original plan (thin), fatigue (orange)</text>
+    <text x="2" y="${top+gap+9}" font-size="9" fill="var(--muted)">Form</text>
+  </svg>`;
+}
+function seasonText(){
+  const z = model.season;
+  if (!z) return `<p class="explain">Every Monday the planner compares your real fitness with where the original plan expected you to be, then reshapes the rest of the season. The first check runs once you’ve logged most of a full week.</p>`;
+  const pct = Math.round(z.r*100);
+  const verdict = z.r === 1 ? 'On plan. The rest of the season follows the original curve.'
+    : z.r < 1 ? `Behind plan. Upcoming weeks now grow from what you actually did, by at most 10% a week, until they rejoin the original plan. Pushing harder to catch up is how injuries happen.`
+    : `Ahead of plan. The remaining build is raised by up to 10%, within your weekly hour limit.`;
+  return `<p class="explain">After week ${z.week+1}: fitness <b style="color:var(--ink)">${z.actual.toFixed(0)}</b> against <b style="color:var(--ink)">${z.expected.toFixed(0)}</b> expected (${pct}%). ${verdict}</p>`;
+}
+function formView(){
+  const n = model.now, r = model.race;
+  const feel = n.tsb < -25 ? 'Deep in a training block. Expect heavy legs.' : n.tsb < -10 ? 'Productive fatigue. This is where fitness gets built.' : n.tsb < 5 ? 'Balanced: training and recovering in step.' : 'Fresh. Good for a hard session or a race.';
+  return `
+  <div class="stats">
+    <div class="stat"><b>${n.ctl.toFixed(0)}</b><span>Fitness</span></div>
+    <div class="stat"><b>${n.atl.toFixed(0)}</b><span>Fatigue</span></div>
+    <div class="stat"><b>${n.tsb>0?'+':''}${n.tsb.toFixed(0)}</b><span>Form</span></div>
+  </div>
+  <p class="explain">${feel}</p>
+  <div class="panel">${chart()}</div>
+  <div class="panel"><h3>Season check</h3>${seasonText()}</div>
+  <div class="panel"><h3>On race day, if you follow the plan</h3>
+    <p class="explain">Fitness around <b style="color:var(--ink)">${r.ctl.toFixed(0)}</b> with form at <b style="color:var(--ink)">${r.tsb>0?'+':''}${r.tsb.toFixed(0)}</b>. Form between +10 and +25 on race morning is the sweet spot: rested but still sharp.</p></div>
+  <div class="panel"><h3>How this is worked out</h3>
+    <p class="explain">Every session has a training load: its duration weighted by how hard it was (your RPE if you log one). Fitness is the 6-week average of that load, fatigue the 1-week average, and form is the gap between them. Solid lines are what you\u2019ve logged; dashed lines assume you do the rest of the plan.</p></div>`;
+}
+
+// ---------- settings ----------
+function settingsView(){
+  const s = Object.assign({}, E.DEFAULTS, state.settings), p = Object.assign({}, E.DEFAULTS.paces, (state.settings.paces||{}));
+  const pace = (k,l) => `<div class="field"><label for="p_${k}">${l}</label><input id="p_${k}" type="text" inputmode="numeric" value="${E.fmtPace(p[k])}" placeholder="m:ss"></div>`;
+  return `
+  <div class="panel" style="margin-top:22px"><h3>Minutes you can train each day</h3>
+    <div class="grid7">${E.DAY_NAMES.map((d,i)=>`<label>${d}<input type="number" min="0" step="15" id="av${i}" value="${s.availability[i]}"></label>`).join('')}</div>
+    <p class="explain">The plan fits sessions into these. Set a day to 0 for a rest day.</p></div>
+  <div class="panel"><h3>Kit and dates</h3>
+    <div class="field"><label for="bikeFrom">Road bike from</label><input id="bikeFrom" type="date" value="${s.bikeFrom||''}"></div>
+    <div class="field"><label for="poolFrom">Pool access from</label><input id="poolFrom" type="date" value="${s.poolFrom||''}"></div>
+    <div class="field"><label for="raceDate">Race day</label><input id="raceDate" type="date" value="${s.raceDate}"></div></div>
+  <div class="panel"><h3>Limits</h3>
+    <div class="field"><label for="maxWeekHours">Most hours in a week</label><input id="maxWeekHours" type="number" min="6" max="25" step=".5" value="${s.maxWeekHours}"></div>
+    <div class="field"><label for="maxLongRunKm">Longest training run (km)</label><input id="maxLongRunKm" type="number" min="12" max="42" value="${s.maxLongRunKm}"></div>
+    <div class="field"><label for="startCTL">Starting fitness</label><input id="startCTL" type="number" min="5" max="90" value="${s.startCTL}"></div></div>
+  <div class="panel"><h3>Run paces (per km)</h3>
+    ${pace('easy','Easy and long')}${pace('steady','Steady')}${pace('fast','Fast, under 10 km')}${pace('goal','70.3 run goal')}</div>
+  <div class="btns"><button class="btn" id="saveSettings">Save and rebuild plan</button></div>
+  <div class="panel"><h3>Your data</h3>
+    <p class="explain">Your log lives on this device. Back it up to move it between your phone and laptop.</p>
+    <div class="btns">
+      <button class="btn ghost" id="csv">Download plan (CSV)</button>
+      <button class="btn ghost" id="backup">Back up log</button>
+      <button class="btn ghost" id="restoreBtn">Restore from backup</button><input type="file" id="restore" accept="application/json" hidden>
+      <button class="btn danger" id="reset">Clear all logs</button>
+    </div></div>`;
+}
+function readSettings(){
+  const num = id => parseFloat($('#'+id).value);
+  const pace = id => { const m = /^(\d+):(\d{1,2})$/.exec($('#p_'+id).value.trim()); return m ? +m[1]*60 + +m[2] : null; };
+  const av = E.DAY_NAMES.map((_,i)=>Math.max(0, Math.min(600, parseInt($('#av'+i).value)||0)));
+  const paces = {}; for (const k of ['easy','steady','fast','goal']) { const v = pace(k); if (!v) { toast('Paces need the format m:ss, like 6:30'); return null; } paces[k] = v; }
+  if (!$('#raceDate').value) { toast('Add a race date'); return null; }
+  return Object.assign({}, state.settings, { availability: av, bikeFrom: $('#bikeFrom').value, poolFrom: $('#poolFrom').value, raceDate: $('#raceDate').value,
+    maxWeekHours: num('maxWeekHours')||18, maxLongRunKm: num('maxLongRunKm')||26, startCTL: num('startCTL')||35, paces });
+}
+function download(name, text, type){
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], {type})); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+// ---------- logging sheet ----------
+function findSession(id){ for (const w of model.weeks) for (const d of w.days) for (const s of d) if (s.id === id) return s; }
+function openSheet(id){
+  const s = findSession(id); if (!s) return;
+  const log = state.logs[id] || {}, edit = state.edits[id] || {};
+  let status = log.status || null, day = s.day;
+  const w = model.weeks[s.week];
+  const RPE = ['','Very easy','Easy','Easy','Comfortable','Steady','Moderate','Hard','Very hard','Very hard','Max'];
+  const sheet = $('#sheet');
+  sheet.innerHTML = `<h3>${esc(s.label)}</h3><div class="d">${E.DAY_NAMES[s.day]} ${fmtDay(s.date)}, ${hm(s.min)}. ${esc(E.describe(s, model.settings))}</div>
+    ${s.log ? '' : `<h4>Change the plan</h4>
+    <div class="days7" role="group" aria-label="Move to day">${E.DAY_NAMES.map((d,i)=>`<button data-day="${i}">${d}</button>`).join('')}</div>
+    <div class="row"><label for="pmin">Length (min)</label><span><input id="pmin" type="number" min="15" max="600" step="5" value="${s.min}" style="width:96px">
+      ${edit.min!=null||edit.day!=null?' <button class="link" id="preset">Back to plan</button>':''}</span></div>`}
+    <h4>How did it go?</h4>
+    <div class="seg" role="group" aria-label="How did it go">
+      <button data-st="done">Done</button><button data-st="partial">Shorter</button><button data-st="missed">Missed</button></div>
+    <div class="row" id="minRow"><label for="lmin">Minutes done</label><input id="lmin" type="number" min="0" max="600" step="5" value="${log.min!=null?log.min:s.min}" style="width:96px"></div>
+    <div class="row" id="rpeRow"><label for="lrpe">Effort</label><input id="lrpe" type="range" min="1" max="10" value="${log.rpe||5}"><span class="rpe" id="rpev"></span></div>
+    <div class="btns" style="margin-top:18px"><button class="btn" id="lsave">Save</button>${state.logs[id]?'<button class="btn ghost" id="lclear">Clear log</button>':''}<button class="btn ghost" id="lclose">Cancel</button></div>`;
+  const sync = () => {
+    sheet.querySelectorAll('[data-st]').forEach(b => b.setAttribute('aria-pressed', b.dataset.st === status));
+    sheet.querySelectorAll('[data-day]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.day === day));
+    $('#minRow').style.display = status && status !== 'missed' ? '' : 'none';
+    $('#rpeRow').style.display = status && status !== 'missed' ? '' : 'none';
+    $('#rpev').textContent = $('#lrpe').value + ' ' + RPE[$('#lrpe').value];
+  };
+  sheet.querySelectorAll('[data-st]').forEach(b => b.onclick = () => { status = status === b.dataset.st ? null : b.dataset.st; if (status==='partial' && +$('#lmin').value >= s.min) $('#lmin').value = Math.round(s.min*.6/5)*5; sync(); });
+  sheet.querySelectorAll('[data-day]').forEach(b => b.onclick = () => { day = +b.dataset.day; sync(); });
+  $('#lrpe').oninput = sync;
+  if ($('#preset')) $('#preset').onclick = () => { delete state.edits[id]; save(); closeSheet(); render(); toast('Back to the plan'); };
+  $('#lsave').onclick = () => {
+    const msgs = [];
+    if (!s.log && $('#pmin')) {
+      const pm = Math.max(15, Math.min(600, Math.round((parseInt($('#pmin').value)||s.min)/5)*5));
+      const e = Object.assign({}, state.edits[id] || {});
+      if (day !== s.day) { e.day = day; msgs.push('Moved to ' + E.DAY_NAMES[day]); }
+      if (pm !== s.min) { e.min = pm; msgs.push('Length set to ' + pm + ' min'); }
+      if (Object.keys(e).length) state.edits[id] = e;
+    }
+    if (status) {
+      const entry = { status, at: localISO() };
+      if (status !== 'missed') { entry.min = Math.max(0, parseInt($('#lmin').value)||0); entry.rpe = +$('#lrpe').value; }
+      state.logs[id] = entry; msgs.push('Logged');
+    }
+    save(); closeSheet();
+    const before = model.events.length; render();
+    if (!msgs.length) return;
+    toast(status === 'missed' && model.events.length > before ? 'Logged. Your week has been adjusted.' : msgs.join('. '));
+  };
+  if ($('#lclear')) $('#lclear').onclick = () => { delete state.logs[id]; save(); closeSheet(); render(); toast('Log cleared'); };
+  $('#lclose').onclick = closeSheet;
+  sync(); $('#sheetwrap').classList.add('open'); setTimeout(()=>sheet.querySelector('button').focus(), 50);
+}
+function moveTo(id, day){
+  const s = findSession(id); if (!s || s.day === day) return;
+  state.edits[id] = Object.assign({}, state.edits[id] || {}, { day });
+  save(); render(); toast(`${s.label} moved to ${E.DAY_NAMES[day]}`);
+}
+
+// ---------- drag and drop (press and hold on touch, drag with a mouse) ----------
+(function(){
+  let pending = null, drag = null, suppressClick = false;
+  const app = document.getElementById('app');
+  const dayAt = (x, y) => { const el = document.elementFromPoint(x, y); return el && el.closest('.day'); };
+  function begin(e){
+    const el = pending.el; el.classList.add('lifting');
+    const g = document.createElement('div'); g.className = 'dragghost'; g.textContent = el.querySelector('.t span').textContent;
+    document.body.appendChild(g);
+    drag = { id: el.dataset.s, el, g, over: null };
+    try { el.setPointerCapture(pending.pid); } catch(_){}
+    if (navigator.vibrate) navigator.vibrate(12);
+    position(e.clientX, e.clientY);
+  }
+  let scrollRAF = null, lastY = 0, lastX = 0;
+  function autoScroll(){
+    if (!drag) { scrollRAF = null; return; }
+    const edge = 90, vh = window.innerHeight, bottomBar = 72;
+    let dy = 0;
+    if (lastY < edge) dy = -Math.ceil((edge - lastY) / 6);
+    else if (lastY > vh - bottomBar - edge) dy = Math.ceil((lastY - (vh - bottomBar - edge)) / 6);
+    if (dy) { window.scrollBy(0, dy); position(lastX, lastY, true); }
+    scrollRAF = requestAnimationFrame(autoScroll);
+  }
+  function position(x, y, fromScroll){
+    lastX = x; lastY = y;
+    if (!fromScroll && !scrollRAF) scrollRAF = requestAnimationFrame(autoScroll);
+    drag.g.style.left = x + 'px'; drag.g.style.top = y + 'px';
+    const d = dayAt(x, y);
+    if (drag.over && drag.over !== d) drag.over.classList.remove('drop');
+    if (d) d.classList.add('drop'); drag.over = d;
+  }
+  function end(drop){
+    if (pending && pending.timer) clearTimeout(pending.timer);
+    if (drag) {
+      drag.el.classList.remove('lifting'); drag.g.remove();
+      if (drag.over) drag.over.classList.remove('drop');
+      if (drop && drag.over) moveTo(drag.id, +drag.over.dataset.d);
+      suppressClick = true; setTimeout(() => suppressClick = false, 50);
+    }
+    pending = null; drag = null;
+  }
+  app.addEventListener('pointerdown', e => {
+    const el = e.target.closest('[data-drag]'); if (!el || e.button > 0) return;
+    pending = { el, x: e.clientX, y: e.clientY, pid: e.pointerId, touch: e.pointerType !== 'mouse' };
+    if (pending.touch) pending.timer = setTimeout(() => { if (pending) begin({ clientX: pending.x, clientY: pending.y }); }, 380);
+  });
+  app.addEventListener('pointermove', e => {
+    if (drag) { e.preventDefault(); position(e.clientX, e.clientY); return; }
+    if (!pending) return;
+    const moved = Math.hypot(e.clientX - pending.x, e.clientY - pending.y);
+    if (pending.touch) { if (moved > 10) end(false); }       // that was a scroll
+    else if (moved > 6) begin(e);
+  });
+  app.addEventListener('pointerup', () => end(true));
+  app.addEventListener('pointercancel', () => end(false));
+  document.addEventListener('touchmove', e => { if (drag) e.preventDefault(); }, { passive: false });
+  app.addEventListener('contextmenu', e => { if (e.target.closest('[data-drag]')) e.preventDefault(); });
+  app.addEventListener('click', e => { if (suppressClick) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+})();
+function closeSheet(){ $('#sheetwrap').classList.remove('open'); }
+$('#scrim').onclick = closeSheet;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+
+// ---------- render + events ----------
+function render(){
+  rebuild();
+  const app = $('#app');
+  app.innerHTML = ui.tab === 'week' ? weekView() : ui.tab === 'form' ? formView() : settingsView();
+  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === ui.tab));
+  if (ui.tab === 'settings') bindSettings();
+}
+function bindSettings(){
+  $('#saveSettings').onclick = () => { const s = readSettings(); if (!s) return; state.settings = s; save(); render(); toast('Plan rebuilt'); };
+  $('#csv').onclick = () => download('aix-70.3-plan.csv', E.toCSV(model), 'text/csv');
+  $('#backup').onclick = () => download('aix-70.3-backup-' + localISO() + '.json', JSON.stringify(state, null, 1), 'application/json');
+  $('#restoreBtn').onclick = () => $('#restore').click();
+  $('#restore').onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try { const s = JSON.parse(await f.text()); if (!s.settings || !s.logs) throw 0; s.edits = s.edits || {}; state = s; save(); render(); toast('Backup restored'); }
+    catch(_) { toast('That file isn\u2019t a planner backup'); }
+  };
+  $('#reset').onclick = () => { if (confirm('Clear every logged session and your own changes? Your settings stay.')) { state.logs = {}; state.edits = {}; save(); render(); toast('Logs cleared'); } };
+}
+$('#app').addEventListener('click', e => {
+  if (e.target.id === 'resetWeek') { model.weeks[ui.week].days.flat().forEach(x => delete state.edits[x.id]); save(); render(); toast('Week back to the plan'); return; }
+  const s = e.target.closest('[data-s]'); if (s) return openSheet(s.dataset.s);
+  const nav = e.target.closest('[data-nav]');
+  if (nav) { const d = +nav.dataset.nav; ui.week = d === 0 ? model.currentWeek : Math.max(0, Math.min(model.weeks.length-1, ui.week + d)); render(); return; }
+  const bar = e.target.closest('.bar'); if (bar) { ui.week = +bar.dataset.w; render(); }
+});
+document.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (!b) return; ui.tab = b.dataset.tab; render(); window.scrollTo(0,0); });
+// refresh at midnight / when reopened
+document.addEventListener('visibilitychange', () => { if (!document.hidden && model && model.today !== localISO()) render(); });
+
+render();
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>
